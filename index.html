@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wednesday Mysterie</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app" aria-live="polite">
+    <section class="screen" id="screen">
+      <img class="scene-image" id="sceneImage" src="" alt="">
+      <img class="animation-image" id="animationImage" src="" alt="" aria-hidden="true">
+      <div class="missing-image" id="missingImage" hidden>
+        <span id="missingImageName"></span>
+      </div>
+
+      <div class="vignette" aria-hidden="true"></div>
+      <div class="ar-overlay" id="arOverlay" hidden aria-hidden="true"></div>
+
+      <button class="back-button" id="backButton" type="button">Terug</button>
+      <p class="inventory" id="inventory">Vingers gevonden: 0/5</p>
+
+      <p class="message" id="message" hidden></p>
+      <div class="finger-cover" id="fingerCover" aria-hidden="true"></div>
+      <div class="collect-effect" id="collectEffect" aria-hidden="true"></div>
+
+      <div class="hotspots" id="hotspots"></div>
+      <div class="actions" id="actions"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
