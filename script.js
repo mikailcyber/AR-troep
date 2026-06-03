@@ -46,20 +46,20 @@ const scenes = {
       {
         label: "Deuren",
         aria: "Ga door de deuren van het kasteel",
-        x: 74,
-        y: 52,
-        w: 14,
-        h: 26,
+        x: 78,
+        y: 59,
+        w: 8,
+        h: 18,
         shape: "arched-door",
         target: "entranceCastle"
       },
       {
         label: "Schuur",
         aria: "Onderzoek de schuur",
-        x: 0,
-        y: 58,
-        w: 19,
-        h: 30,
+        x: 1,
+        y: 61,
+        w: 11,
+        h: 24,
         shape: "shed",
         message: "De schuur zit op slot. Misschien ligt de sleutel ergens in het kasteel."
       }
@@ -73,10 +73,10 @@ const scenes = {
       {
         label: "Deur",
         aria: "Open de deur naar de grote hal",
-        x: 54,
-        y: 35,
-        w: 16,
-        h: 32,
+        x: 55,
+        y: 41,
+        w: 12,
+        h: 25,
         shape: "arched-door",
         action() {
           return playFrameAnimation(
@@ -99,20 +99,20 @@ const scenes = {
       {
         label: "Uitgang",
         aria: "Ga via de uitgang terug naar buiten",
-        x: 86,
-        y: 13,
-        w: 13,
-        h: 58,
+        x: 90,
+        y: 16,
+        w: 9,
+        h: 48,
         shape: "door-tall",
         target: "main"
       },
       {
         label: "Kelder",
         aria: "Ga naar de kelder",
-        x: 64,
-        y: 48,
-        w: 20,
-        h: 32,
+        x: 68,
+        y: 50,
+        w: 15,
+        h: 25,
         shape: "stairs-down",
         rotate: -3,
         get target() {
@@ -123,9 +123,9 @@ const scenes = {
         label: "Keuken",
         aria: "Ga naar de keuken",
         x: 0,
-        y: 22,
-        w: 23,
-        h: 54,
+        y: 27,
+        w: 17,
+        h: 43,
         shape: "archway",
         target: "kitchen"
       }
@@ -139,10 +139,10 @@ const scenes = {
       {
         label: "Trap naar boven",
         aria: "Ga via de trap terug naar de grote hal",
-        x: 27,
-        y: 15,
-        w: 31,
-        h: 55,
+        x: 30,
+        y: 18,
+        w: 25,
+        h: 49,
         shape: "stairs-up",
         rotate: -1,
         target: "hall"
@@ -150,10 +150,10 @@ const scenes = {
       {
         label: "Lichtknop",
         aria: "Zet het licht aan",
-        x: 0,
-        y: 39,
-        w: 14,
-        h: 27,
+        x: 2.2,
+        y: 44,
+        w: 5.6,
+        h: 17,
         shape: "switch",
         target: "basementLight",
         pulse: true
@@ -168,10 +168,10 @@ const scenes = {
       {
         label: "Trap naar boven",
         aria: "Ga via de trap terug naar de grote hal",
-        x: 27,
-        y: 14,
-        w: 32,
-        h: 57,
+        x: 30,
+        y: 18,
+        w: 25,
+        h: 49,
         shape: "stairs-up",
         rotate: -1,
         target: "hall"
@@ -179,20 +179,20 @@ const scenes = {
       {
         label: "Lichtknop",
         aria: "Zet het licht uit",
-        x: 0,
-        y: 43,
-        w: 10,
-        h: 20,
+        x: 2.2,
+        y: 44,
+        w: 5.6,
+        h: 17,
         shape: "switch",
         target: "basementDark"
       },
       {
         label: "AR-boek",
         aria: "Open het boek als AR-aanwijzing",
-        x: 88,
-        y: 72,
-        w: 12,
-        h: 22,
+        x: 91,
+        y: 76,
+        w: 7,
+        h: 13,
         shape: "book",
         rotate: 8,
         pulse: true,
@@ -203,10 +203,10 @@ const scenes = {
       {
         label: "Bianca",
         aria: "Praat met Bianca Barclay",
-        x: 74,
-        y: 34,
-        w: 21,
-        h: 55,
+        x: 80,
+        y: 37,
+        w: 12,
+        h: 47,
         shape: "person"
       }
     ]
@@ -241,9 +241,9 @@ const scenes = {
         label: "Oven",
         aria: "Open de oven",
         x: 0,
-        y: 18,
-        w: 24,
-        h: 68,
+        y: 22,
+        w: 16,
+        h: 58,
         shape: "oven",
         target: "ovenOpen",
         pulse: true
@@ -251,10 +251,10 @@ const scenes = {
       {
         label: "Terug naar hal",
         aria: "Ga terug naar de grote hal",
-        x: 72,
-        y: 12,
-        w: 27,
-        h: 66,
+        x: 75,
+        y: 15,
+        w: 19,
+        h: 58,
         shape: "archway",
         target: "hall"
       }
@@ -270,20 +270,20 @@ const scenes = {
       {
         label: "Terug",
         aria: "Ga terug naar de keuken",
-        x: 0,
-        y: 30,
-        w: 13,
-        h: 27,
+        x: 2,
+        y: 40,
+        w: 9,
+        h: 16,
         shape: "arrow-left",
         target: "kitchen"
       },
       {
         label: "Vinger",
         aria: "Pak de vinger van Thing",
-        x: 42,
+        x: 43,
         y: 47,
-        w: 22,
-        h: 15,
+        w: 19,
+        h: 13,
         shape: "finger",
         rotate: 4,
         hiddenWhenFound: true,

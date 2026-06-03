@@ -157,7 +157,7 @@ window.addEventListener("touchend", () => {
 }, { passive: true });
 
 function setBookZoom(value) {
-  bookZoom = Math.max(1.1, Math.min(2.4, value));
+  bookZoom = Math.max(1.1, Math.min(3.5, value));
   updateBookZoom();
 }
 
