@@ -11,6 +11,10 @@ const precompiledTargetPath = "assets/ar/book-target.mind";
 
 let objectUrl = null;
 
+if (!new URLSearchParams(window.location.search).has("scanner")) {
+  window.location.replace("index.html");
+}
+
 exitButton.addEventListener("click", () => {
   window.location.href = "index.html?scene=basementLight";
 });
