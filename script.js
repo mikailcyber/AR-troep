@@ -176,10 +176,10 @@ const scenes = {
       {
         label: "Spiegel",
         aria: "Open de AR-spiegel",
-        x: 74,
-        y: 17,
-        w: 9,
-        h: 35,
+        x: 75.6,
+        y: 17.5,
+        w: 8.4,
+        h: 39.5,
         shape: "mirror",
         action() {
           openFaceAR();
