@@ -11,6 +11,7 @@ const imagePaths = {
   arBook: "assets/ar-boek.png",
   mirrorRoom: "assets/spiegelkamer.png",
   mirrorPaper: "assets/papier-vinger.png",
+  mirrorPaperEmpty: "assets/papier-zonder-vinger.png",
   kitchen: "assets/keuken.png",
   ovenOpen: "assets/oven-open.png",
   ovenOpenEmpty: "assets/oven-open-empty.png"
@@ -188,7 +189,9 @@ const scenes = {
   },
   mirrorPaper: {
     label: "Bloedig papier",
-    image: imagePaths.mirrorPaper,
+    get image() {
+      return foundPaperFinger ? imagePaths.mirrorPaperEmpty : imagePaths.mirrorPaper;
+    },
     back: "mirrorRoom",
     hotspots: [
       {
@@ -497,6 +500,7 @@ function collectFinger(source = "oven") {
   saveGameState();
   screen.classList.add("has-found-finger");
   if (source === "oven") sceneImage.src = imagePaths.ovenOpenEmpty;
+  if (source === "paper") sceneImage.src = imagePaths.mirrorPaperEmpty;
   updateInventory(true);
   playCollectEffect();
   renderHotspots(scenes[currentScene]);
