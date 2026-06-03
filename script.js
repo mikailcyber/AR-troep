@@ -78,10 +78,10 @@ const scenes = {
       {
         label: "Deur",
         aria: "Open de deur naar de grote hal",
-        x: 55,
-        y: 41,
-        w: 12,
-        h: 25,
+        x: 54.89,
+        y: 31.12,
+        w: 12.56,
+        h: 33.65,
         shape: "arched-door",
         action() {
           return playFrameAnimation(
@@ -104,20 +104,20 @@ const scenes = {
       {
         label: "Uitgang",
         aria: "Ga via de uitgang terug naar buiten",
-        x: 90,
-        y: 16,
-        w: 9,
-        h: 48,
+        x: 89.59,
+        y: 15.74,
+        w: 10.25,
+        h: 68.15,
         shape: "door-tall",
         target: "main"
       },
       {
         label: "Kelder",
         aria: "Ga naar de kelder",
-        x: 68,
-        y: 50,
-        w: 15,
-        h: 25,
+        x: 67.64,
+        y: 57.99,
+        w: 11.86,
+        h: 20.07,
         shape: "stairs-down",
         rotate: -3,
         get target() {
@@ -127,10 +127,10 @@ const scenes = {
       {
         label: "Bovenkamer",
         aria: "Ga naar de kamer boven aan de rechtertrap",
-        x: 62,
-        y: 20,
-        w: 16,
-        h: 31,
+        x: 59.6,
+        y: 19.2,
+        w: 13.2,
+        h: 18,
         shape: "stairs-up",
         rotate: 1,
         target: "mirrorRoom"
@@ -138,10 +138,10 @@ const scenes = {
       {
         label: "Keuken",
         aria: "Ga naar de keuken",
-        x: 0,
-        y: 27,
-        w: 17,
-        h: 43,
+        x: 2.5,
+        y: 15.74,
+        w: 15.98,
+        h: 62.21,
         shape: "archway",
         target: "kitchen"
       }
@@ -229,23 +229,12 @@ const scenes = {
     },
     hotspots: [
       {
-        label: "Trap naar boven",
-        aria: "Ga via de trap terug naar de grote hal",
-        x: 30,
-        y: 18,
-        w: 25,
-        h: 49,
-        shape: "stairs-up",
-        rotate: -1,
-        target: "hall"
-      },
-      {
         label: "Lichtknop",
         aria: "Zet het licht aan",
-        x: 0.8,
-        y: 41.5,
-        w: 9,
-        h: 21,
+        x: 0.31,
+        y: 45.75,
+        w: 3.99,
+        h: 12.74,
         shape: "switch",
         target: "basementLight",
         pulse: true
@@ -263,10 +252,10 @@ const scenes = {
       {
         label: "Trap naar boven",
         aria: "Ga via de trap terug naar de grote hal",
-        x: 30,
-        y: 18,
-        w: 25,
-        h: 49,
+        x: 34.56,
+        y: 19.75,
+        w: 13.56,
+        h: 52.51,
         shape: "stairs-up",
         rotate: -1,
         target: "hall"
@@ -274,35 +263,26 @@ const scenes = {
       {
         label: "Lichtknop",
         aria: "Zet het licht uit",
-        x: 0.8,
-        y: 41.5,
-        w: 9,
-        h: 21,
+        x: 2.04,
+        y: 46.71,
+        w: 4.18,
+        h: 12.54,
         shape: "switch",
         target: "basementDark"
       },
       {
         label: "AR-boek",
         aria: "Open het boek als AR-aanwijzing",
-        x: 91,
-        y: 76,
-        w: 7,
-        h: 13,
+        x: 92.56,
+        y: 79.94,
+        w: 6.01,
+        h: 13.17,
         shape: "book",
         rotate: 8,
         pulse: true,
         action() {
           openARBook();
         }
-      },
-      {
-        label: "Bianca",
-        aria: "Praat met Bianca Barclay",
-        x: 80,
-        y: 37,
-        w: 12,
-        h: 47,
-        shape: "person"
       }
     ]
   },
@@ -335,10 +315,10 @@ const scenes = {
       {
         label: "Oven",
         aria: "Open de oven",
-        x: 0,
-        y: 22,
-        w: 16,
-        h: 58,
+        x: 6.69,
+        y: 54.75,
+        w: 9.81,
+        h: 18.71,
         shape: "oven",
         target: "ovenOpen",
         pulse: true
@@ -346,10 +326,10 @@ const scenes = {
       {
         label: "Terug naar hal",
         aria: "Ga terug naar de grote hal",
-        x: 75,
-        y: 15,
-        w: 19,
-        h: 58,
+        x: 72.93,
+        y: 11.26,
+        w: 6.75,
+        h: 60.24,
         shape: "archway",
         target: "hall"
       }
@@ -365,20 +345,20 @@ const scenes = {
       {
         label: "Terug",
         aria: "Ga terug naar de keuken",
-        x: 2,
-        y: 40,
-        w: 9,
-        h: 16,
+        x: 7.64,
+        y: 43.92,
+        w: 7.48,
+        h: 11.41,
         shape: "arrow-left",
         target: "kitchen"
       },
       {
         label: "Vinger",
         aria: "Pak de vinger van Thing",
-        x: 43,
-        y: 47,
-        w: 19,
-        h: 13,
+        x: 45.58,
+        y: 55.33,
+        w: 12.38,
+        h: 6.7,
         shape: "finger",
         rotate: 4,
         hiddenWhenFound: true,
