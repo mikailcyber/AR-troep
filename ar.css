@@ -166,6 +166,43 @@ button {
   backdrop-filter: blur(8px);
 }
 
+.zoom-controls {
+  position: fixed;
+  left: 50%;
+  bottom: max(88px, calc(env(safe-area-inset-bottom) + 88px));
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+  padding: 8px;
+  border: 1px solid rgba(190, 187, 198, 0.22);
+  border-radius: 8px;
+  background: rgba(11, 11, 16, 0.74);
+  color: var(--text);
+  backdrop-filter: blur(10px);
+}
+
+.zoom-controls button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(232, 230, 227, 0.28);
+  border-radius: 7px;
+  background: rgba(21, 24, 33, 0.94);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.zoom-controls span {
+  min-width: 54px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+}
+
 .ar-start.is-hidden {
   opacity: 0;
   pointer-events: none;

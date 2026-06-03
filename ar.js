@@ -4,12 +4,20 @@ const statusText = document.getElementById("statusText");
 const scanNote = document.getElementById("scanNote");
 const exitButton = document.getElementById("exitButton");
 const sceneMount = document.getElementById("sceneMount");
+const zoomControls = document.getElementById("zoomControls");
+const zoomInButton = document.getElementById("zoomInButton");
+const zoomOutButton = document.getElementById("zoomOutButton");
+const zoomLabel = document.getElementById("zoomLabel");
 
 const targetImagePath = "assets/ar/book-scan-marker.png";
 const overlayImagePath = "assets/ar/book-inside-transparent.png";
 const precompiledTargetPath = "assets/ar/book-target.mind";
 
 let objectUrl = null;
+let bookPlane = null;
+let bookZoom = 1.5;
+let pinchStartDistance = null;
+let pinchStartZoom = bookZoom;
 
 if (!new URLSearchParams(window.location.search).has("scanner")) {
   window.location.replace("index.html");
@@ -85,10 +93,11 @@ function createARScene(targetUrl) {
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
       <a-entity id="bookTarget" mindar-image-target="targetIndex: 0">
         <a-plane
+          id="bookPlane"
           src="#bookInside"
           position="0 0 0.02"
-          width="1.2"
-          height="1.2"
+          width="1.5"
+          height="1.5"
           material="transparent: true; alphaTest: 0.01"
           animation__appear="property: scale; from: 0.82 0.82 0.82; to: 1 1 1; dur: 520; easing: easeOutCubic">
         </a-plane>
@@ -98,6 +107,8 @@ function createARScene(targetUrl) {
 
   const scene = sceneMount.querySelector("a-scene");
   const target = sceneMount.querySelector("#bookTarget");
+  bookPlane = sceneMount.querySelector("#bookPlane");
+  updateBookZoom();
 
   scene.addEventListener("arReady", () => {
     startPanel.classList.add("is-hidden");
@@ -112,11 +123,55 @@ function createARScene(targetUrl) {
 
   target.addEventListener("targetFound", () => {
     scanNote.hidden = true;
+    zoomControls.hidden = false;
   });
 
   target.addEventListener("targetLost", () => {
     scanNote.hidden = false;
   });
+}
+
+zoomInButton.addEventListener("click", () => {
+  setBookZoom(bookZoom + 0.15);
+});
+
+zoomOutButton.addEventListener("click", () => {
+  setBookZoom(bookZoom - 0.15);
+});
+
+window.addEventListener("touchstart", (event) => {
+  if (event.touches.length !== 2) return;
+  pinchStartDistance = getTouchDistance(event.touches);
+  pinchStartZoom = bookZoom;
+}, { passive: true });
+
+window.addEventListener("touchmove", (event) => {
+  if (event.touches.length !== 2 || !pinchStartDistance) return;
+  const nextDistance = getTouchDistance(event.touches);
+  setBookZoom(pinchStartZoom * (nextDistance / pinchStartDistance));
+}, { passive: true });
+
+window.addEventListener("touchend", () => {
+  pinchStartDistance = null;
+  pinchStartZoom = bookZoom;
+}, { passive: true });
+
+function setBookZoom(value) {
+  bookZoom = Math.max(1.1, Math.min(2.4, value));
+  updateBookZoom();
+}
+
+function updateBookZoom() {
+  if (!bookPlane) return;
+  bookPlane.setAttribute("width", String(bookZoom));
+  bookPlane.setAttribute("height", String(bookZoom));
+  zoomLabel.textContent = `${Math.round(bookZoom * 100)}%`;
+}
+
+function getTouchDistance(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.hypot(dx, dy);
 }
 
 window.addEventListener("pagehide", () => {
