@@ -27,6 +27,19 @@
 
       <div class="hotspots" id="hotspots"></div>
       <div class="actions" id="actions"></div>
+
+      <div class="pc-ar-panel" id="pcArPanel" hidden>
+        <div class="pc-ar-dialog" role="dialog" aria-modal="true" aria-labelledby="pcArTitle">
+          <button class="pc-ar-close" id="pcArClose" type="button" aria-label="Sluit AR-paneel">×</button>
+          <div class="pc-ar-copy">
+            <h2 id="pcArTitle">AR Boek</h2>
+            <p>Scan deze QR met je telefoon. Start AR en richt je telefoon daarna op het boek hiernaast.</p>
+            <img class="pc-ar-qr" id="pcArQr" src="" alt="QR-code naar de AR-scanner">
+            <a class="pc-ar-link" id="pcArLink" href="ar.html?scanner=1" target="_blank" rel="noreferrer">Open AR-link</a>
+          </div>
+          <img class="pc-ar-target" src="assets/ar/book-target.png" alt="Scanmarker van het boek">
+        </div>
+      </div>
     </section>
   </main>
 

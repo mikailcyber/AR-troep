@@ -6,7 +6,7 @@ const exitButton = document.getElementById("exitButton");
 const sceneMount = document.getElementById("sceneMount");
 
 const targetImagePath = "assets/ar/book-target.png";
-const overlayImagePath = "assets/ar/book-inside.png";
+const overlayImagePath = "assets/ar/book-inside-transparent.png";
 const precompiledTargetPath = "assets/ar/book-target.mind";
 
 let objectUrl = null;
@@ -69,7 +69,7 @@ function loadImage(src) {
 function createARScene(targetUrl) {
   sceneMount.innerHTML = `
     <a-scene
-      mindar-image="imageTargetSrc: ${targetUrl}; filterMinCF: 0.0001; filterBeta: 0.001; uiScanning: no; uiLoading: no; uiError: no;"
+      mindar-image="imageTargetSrc: ${targetUrl}; filterMinCF: 0.0001; filterBeta: 0.001; uiScanning: no; uiLoading: no; uiError: no; warmupTolerance: 5; missTolerance: 8;"
       color-space="sRGB"
       renderer="colorManagement: true, physicallyCorrectLights"
       vr-mode-ui="enabled: false"
@@ -83,8 +83,8 @@ function createARScene(targetUrl) {
         <a-plane
           src="#bookInside"
           position="0 0 0.02"
-          width="1.35"
-          height="1.35"
+          width="1.2"
+          height="1.2"
           material="transparent: true; alphaTest: 0.01"
           animation__appear="property: scale; from: 0.82 0.82 0.82; to: 1 1 1; dur: 520; easing: easeOutCubic">
         </a-plane>

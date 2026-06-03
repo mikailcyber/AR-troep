@@ -40,6 +40,16 @@ button {
   height: 100%;
 }
 
+.ar-scene video,
+.ar-scene canvas {
+  object-fit: contain !important;
+}
+
+.a-enter-vr,
+.a-enter-ar {
+  display: none !important;
+}
+
 .ar-page {
   background:
     radial-gradient(110% 90% at 50% 0%, rgba(59, 1, 113, 0.34), transparent 55%),
@@ -87,7 +97,8 @@ button {
 .target-preview {
   width: min(100%, 250px);
   aspect-ratio: 1;
-  object-fit: cover;
+  object-fit: contain;
+  background: rgba(232, 230, 227, 0.92);
   border-radius: 6px;
   box-shadow: 0 0 0 1px rgba(190, 187, 198, 0.18), 0 14px 40px rgba(0, 0, 0, 0.46);
 }

@@ -394,6 +394,91 @@ button {
   font-size: 17px;
 }
 
+.pc-ar-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 34px;
+  background:
+    radial-gradient(circle at center, rgba(59, 1, 113, 0.34), rgba(11, 11, 16, 0.82) 72%),
+    rgba(11, 11, 16, 0.74);
+  backdrop-filter: blur(8px);
+}
+
+.pc-ar-dialog {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) minmax(360px, 620px);
+  gap: 28px;
+  align-items: center;
+  width: min(94%, 1040px);
+  padding: 24px;
+  border: 1px solid rgba(190, 187, 198, 0.22);
+  border-radius: 8px;
+  background: rgba(11, 11, 16, 0.9);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.58), 0 0 54px rgba(59, 1, 113, 0.28);
+}
+
+.pc-ar-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(232, 230, 227, 0.24);
+  border-radius: 6px;
+  background: rgba(21, 24, 33, 0.86);
+  color: var(--text);
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.pc-ar-copy {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.pc-ar-copy h2 {
+  margin: 0 0 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 34px;
+  letter-spacing: 0;
+}
+
+.pc-ar-copy p {
+  margin: 0 auto 16px;
+  max-width: 30ch;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.pc-ar-qr {
+  width: min(100%, 260px);
+  aspect-ratio: 1;
+  padding: 10px;
+  border-radius: 8px;
+  background: #E8E6E3;
+}
+
+.pc-ar-link {
+  display: inline-flex;
+  margin-top: 14px;
+  color: var(--text);
+}
+
+.pc-ar-target {
+  display: block;
+  width: 100%;
+  max-height: 74vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(190, 187, 198, 0.16), 0 18px 55px rgba(0, 0, 0, 0.5);
+}
+
 .ar-overlay {
   position: absolute;
   inset: 0;
@@ -484,13 +569,15 @@ button {
 @media (max-width: 768px) {
   .screen {
     width: 100vw;
-    height: 100vh;
-    max-height: none;
+    height: auto;
+    aspect-ratio: 1581 / 1029;
+    max-height: calc(100vh - 18px);
   }
 
   .scene-image,
   .animation-image {
-    object-fit: cover;
+    object-fit: contain;
+    background: #09090d;
   }
 
   .inventory {
@@ -519,5 +606,24 @@ button {
   .primary-button {
     flex: 1 1 180px;
     font-size: 16px;
+  }
+
+  .pc-ar-panel {
+    padding: 14px;
+  }
+
+  .pc-ar-dialog {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-height: calc(100vh - 28px);
+    overflow: auto;
+  }
+
+  .pc-ar-copy h2 {
+    font-size: 28px;
+  }
+
+  .pc-ar-target {
+    max-height: 42vh;
   }
 }

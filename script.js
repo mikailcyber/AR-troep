@@ -31,6 +31,10 @@ const collectEffect = document.getElementById("collectEffect");
 const hotspots = document.getElementById("hotspots");
 const actions = document.getElementById("actions");
 const arOverlay = document.getElementById("arOverlay");
+const pcArPanel = document.getElementById("pcArPanel");
+const pcArClose = document.getElementById("pcArClose");
+const pcArQr = document.getElementById("pcArQr");
+const pcArLink = document.getElementById("pcArLink");
 
 // Hier kun je teksten, hotspots en routes per scherm aanpassen.
 const scenes = {
@@ -404,7 +408,29 @@ function collectFinger() {
 function openARBook() {
   hasSeenAR = true;
   saveGameState();
-  window.location.href = "ar.html";
+
+  if (isMobileDevice()) {
+    window.location.href = "ar.html?scanner=1";
+    return;
+  }
+
+  showPcARPanel();
+}
+
+function showPcARPanel() {
+  const arUrl = new URL("ar.html?scanner=1", window.location.href).href;
+  pcArLink.href = arUrl;
+  pcArQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(arUrl)}`;
+  pcArPanel.hidden = false;
+  pcArClose.focus();
+}
+
+function hidePcARPanel() {
+  pcArPanel.hidden = true;
+}
+
+function isMobileDevice() {
+  return window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
 }
 
 function saveGameState() {
@@ -513,10 +539,20 @@ function hideMessage() {
 }
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !pcArPanel.hidden) {
+    hidePcARPanel();
+    return;
+  }
+
   if (event.key === "Escape") {
     const scene = scenes[currentScene];
     if (scene && scene.back) showScene(scene.back);
   }
+});
+
+pcArClose.addEventListener("click", hidePcARPanel);
+pcArPanel.addEventListener("click", (event) => {
+  if (event.target === pcArPanel) hidePcARPanel();
 });
 
 loadGameState();
