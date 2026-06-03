@@ -10,6 +10,7 @@ const imagePaths = {
   basementLight: "assets/kelder-licht.png",
   arBook: "assets/ar-boek.png",
   mirrorRoom: "assets/spiegelkamer.png",
+  mirrorPaper: "assets/papier-vinger.png",
   kitchen: "assets/keuken.png",
   ovenOpen: "assets/oven-open.png",
   ovenOpenEmpty: "assets/oven-open-empty.png"
@@ -19,6 +20,7 @@ const gameStateKey = "wednesdayMysterieState";
 let currentScene = "main";
 let hasSeenAR = false;
 let foundFinger = false;
+let foundPaperFinger = false;
 let basementLightOn = false;
 
 const screen = document.getElementById("screen");
@@ -160,6 +162,17 @@ const scenes = {
         target: "hall"
       },
       {
+        label: "Bloedig papier",
+        aria: "Onderzoek het bloedige papier op de grond",
+        x: 51,
+        y: 74,
+        w: 21,
+        h: 22,
+        shape: "paper",
+        rotate: 8,
+        target: "mirrorPaper"
+      },
+      {
         label: "Spiegel",
         aria: "Open de AR-spiegel",
         x: 74,
@@ -169,6 +182,37 @@ const scenes = {
         shape: "mirror",
         action() {
           openFaceAR();
+        }
+      }
+    ]
+  },
+  mirrorPaper: {
+    label: "Bloedig papier",
+    image: imagePaths.mirrorPaper,
+    back: "mirrorRoom",
+    hotspots: [
+      {
+        label: "Terug",
+        aria: "Ga terug naar de spiegelkamer",
+        x: 2,
+        y: 7,
+        w: 10,
+        h: 15,
+        shape: "arrow-left",
+        target: "mirrorRoom"
+      },
+      {
+        label: "Vinger",
+        aria: "Pak de vinger tussen het bloedige papier",
+        x: 45,
+        y: 44,
+        w: 17,
+        h: 22,
+        shape: "finger",
+        rotate: 10,
+        hiddenWhenFound: "paper",
+        action() {
+          collectFinger("paper");
         }
       }
     ]
@@ -395,7 +439,7 @@ function renderHotspots(scene) {
   hotspots.innerHTML = "";
 
   (scene.hotspots || []).forEach((hotspotData) => {
-    if (hotspotData.hiddenWhenFound && foundFinger) return;
+    if (hotspotData.hiddenWhenFound && isFingerFound(hotspotData.hiddenWhenFound)) return;
 
     const button = document.createElement("button");
     button.type = "button";
@@ -438,19 +482,24 @@ function resolveValue(value) {
   return typeof value === "function" ? value() : value;
 }
 
-function collectFinger() {
-  if (foundFinger) {
+function collectFinger(source = "oven") {
+  if (isFingerFound(source)) {
     showMessage("Deze vinger zit al in je inventory.");
     return;
   }
 
-  foundFinger = true;
+  if (source === "paper") {
+    foundPaperFinger = true;
+  } else {
+    foundFinger = true;
+  }
+
   saveGameState();
   screen.classList.add("has-found-finger");
-  sceneImage.src = imagePaths.ovenOpenEmpty;
+  if (source === "oven") sceneImage.src = imagePaths.ovenOpenEmpty;
   updateInventory(true);
   playCollectEffect();
-  renderHotspots(scenes.ovenOpen);
+  renderHotspots(scenes[currentScene]);
 }
 
 function openARBook() {
@@ -489,7 +538,8 @@ function hidePcARPanel() {
 function saveGameState() {
   const state = {
     hasSeenAR,
-    foundFinger
+    foundFinger,
+    foundPaperFinger
   };
 
   localStorage.setItem(gameStateKey, JSON.stringify(state));
@@ -500,9 +550,11 @@ function loadGameState() {
     const state = JSON.parse(localStorage.getItem(gameStateKey) || "{}");
     hasSeenAR = Boolean(state.hasSeenAR);
     foundFinger = Boolean(state.foundFinger);
+    foundPaperFinger = Boolean(state.foundPaperFinger);
   } catch {
     hasSeenAR = false;
     foundFinger = false;
+    foundPaperFinger = false;
   }
 }
 
@@ -519,12 +571,21 @@ function getInitialScene() {
 }
 
 function updateInventory(withEffect) {
-  inventory.textContent = `Vingers gevonden: ${foundFinger ? 1 : 0}/5`;
+  inventory.textContent = `Vingers gevonden: ${getFoundFingerCount()}/5`;
 
   if (!withEffect) return;
   inventory.classList.remove("is-updating");
   inventory.offsetHeight;
   inventory.classList.add("is-updating");
+}
+
+function isFingerFound(source) {
+  if (source === "paper") return foundPaperFinger;
+  return foundFinger;
+}
+
+function getFoundFingerCount() {
+  return Number(foundFinger) + Number(foundPaperFinger);
 }
 
 function playCollectEffect() {

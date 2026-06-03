@@ -350,6 +350,11 @@ button {
   clip-path: polygon(10% 7%, 88% 0, 100% 87%, 12% 100%, 0 18%);
 }
 
+.hotspot--paper {
+  border-radius: 8px;
+  clip-path: polygon(8% 24%, 44% 0, 100% 16%, 92% 88%, 22% 100%, 0 70%);
+}
+
 .hotspot--mirror {
   border-radius: 999px 999px 12px 12px;
   clip-path: polygon(18% 0, 82% 0, 100% 12%, 94% 100%, 6% 100%, 0 12%);
