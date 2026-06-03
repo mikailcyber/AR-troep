@@ -592,6 +592,14 @@ function getFoundFingerCount() {
   return Number(foundFinger) + Number(foundPaperFinger);
 }
 
+function resetGameProgress() {
+  hasSeenAR = false;
+  foundFinger = false;
+  foundPaperFinger = false;
+  basementLightOn = false;
+  localStorage.removeItem(gameStateKey);
+}
+
 function playCollectEffect() {
   collectEffect.classList.remove("is-flying");
   collectEffect.offsetHeight;
@@ -673,5 +681,10 @@ pcArPanel.addEventListener("click", (event) => {
   if (event.target === pcArPanel) hidePcARPanel();
 });
 
-loadGameState();
-showScene(getInitialScene());
+const initialScene = getInitialScene();
+if (initialScene === "main") {
+  resetGameProgress();
+} else {
+  loadGameState();
+}
+showScene(initialScene);
