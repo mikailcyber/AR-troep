@@ -123,7 +123,7 @@ function drawFaceBlood(landmarks, time) {
   ctx.save();
   ctx.globalCompositeOperation = "source-over";
 
-  drawSnapchatForeheadSmears(leftBrow, rightBrow, leftTemple, rightTemple, centerForehead, forehead, faceWidth, angle, time);
+  drawSnapchatForeheadSmears(leftBrow, rightBrow, leftTemple, rightTemple, centerForehead, faceWidth, angle, time);
   drawSnapchatCheekSmears(leftCheek, leftMidCheek, leftJaw, faceWidth, angle - 0.18, -1, time + 170);
   drawSnapchatCheekSmears(rightCheek, rightMidCheek, rightJaw, faceWidth, angle + 0.18, 1, time + 340);
   drawSoftBloodCloud(midpoint(lowerLip, chin), faceWidth * 0.2, faceWidth * 0.09, angle, 0.42, time + 520);
@@ -160,26 +160,13 @@ function getVideoCoverFit() {
   };
 }
 
-function drawSnapchatForeheadSmears(leftBrow, rightBrow, leftTemple, rightTemple, centerForehead, forehead, faceWidth, angle, time) {
+function drawSnapchatForeheadSmears(leftBrow, rightBrow, leftTemple, rightTemple, centerForehead, faceWidth, angle, time) {
   const leftForehead = midpoint(leftTemple, leftBrow);
   const rightForehead = midpoint(rightTemple, rightBrow);
 
-  drawSoftBloodCloud(leftForehead, faceWidth * 0.2, faceWidth * 0.085, angle - 0.12, 0.45, time);
-  drawSoftBloodCloud(rightForehead, faceWidth * 0.2, faceWidth * 0.085, angle + 0.12, 0.45, time + 120);
-  drawSoftBloodCloud(centerForehead, faceWidth * 0.18, faceWidth * 0.065, angle, 0.28, time + 240);
-
-  drawDustyStreak(
-    {
-      x: leftForehead.x - faceWidth * 0.04,
-      y: forehead.y + faceWidth * 0.06
-    },
-    {
-      x: rightForehead.x + faceWidth * 0.04,
-      y: forehead.y + faceWidth * 0.08
-    },
-    faceWidth * 0.026,
-    0.32
-  );
+  drawSoftBloodCloud(leftForehead, faceWidth * 0.2, faceWidth * 0.085, angle - 0.12, 0.56, time);
+  drawSoftBloodCloud(rightForehead, faceWidth * 0.2, faceWidth * 0.085, angle + 0.12, 0.56, time + 120);
+  drawSoftBloodCloud(centerForehead, faceWidth * 0.16, faceWidth * 0.052, angle, 0.34, time + 240);
 }
 
 function drawSnapchatCheekSmears(edgeCheek, midCheek, jaw, faceWidth, angle, side, time) {
@@ -190,9 +177,9 @@ function drawSnapchatCheekSmears(edgeCheek, midCheek, jaw, faceWidth, angle, sid
   const middle = midpoint(edgeCheek, midCheek);
   const lower = midpoint(edgeCheek, jaw);
 
-  drawSoftBloodCloud(upper, faceWidth * 0.22, faceWidth * 0.095, angle + side * 0.22, 0.42, time);
-  drawSoftBloodCloud(middle, faceWidth * 0.27, faceWidth * 0.105, angle + side * 0.1, 0.5, time + 120);
-  drawSoftBloodCloud(lower, faceWidth * 0.2, faceWidth * 0.085, angle - side * 0.08, 0.38, time + 240);
+  drawSoftBloodCloud(upper, faceWidth * 0.22, faceWidth * 0.095, angle + side * 0.22, 0.52, time);
+  drawSoftBloodCloud(middle, faceWidth * 0.27, faceWidth * 0.105, angle + side * 0.1, 0.62, time + 120);
+  drawSoftBloodCloud(lower, faceWidth * 0.2, faceWidth * 0.085, angle - side * 0.08, 0.48, time + 240);
 
   for (let i = 0; i < 4; i += 1) {
     const yOffset = (i - 1.5) * faceWidth * 0.055;
@@ -206,7 +193,7 @@ function drawSnapchatCheekSmears(edgeCheek, midCheek, jaw, faceWidth, angle, sid
         y: midCheek.y + yOffset + faceWidth * 0.025
       },
       faceWidth * (0.013 + i * 0.002),
-      0.2
+      0.27
     );
   }
 }
@@ -220,9 +207,9 @@ function drawSoftBloodCloud(center, width, height, angle, alpha, time) {
   ctx.globalAlpha = alpha;
 
   const haze = ctx.createRadialGradient(0, 0, height * 0.1, 0, 0, width * 0.65 * pulse);
-  haze.addColorStop(0, "rgba(118, 9, 15, 0.68)");
-  haze.addColorStop(0.46, "rgba(128, 26, 22, 0.32)");
-  haze.addColorStop(1, "rgba(85, 0, 9, 0)");
+  haze.addColorStop(0, "rgba(164, 6, 18, 0.78)");
+  haze.addColorStop(0.46, "rgba(181, 30, 28, 0.43)");
+  haze.addColorStop(1, "rgba(115, 0, 10, 0)");
 
   ctx.fillStyle = haze;
   ctx.beginPath();
@@ -230,13 +217,13 @@ function drawSoftBloodCloud(center, width, height, angle, alpha, time) {
   ctx.fill();
 
   ctx.globalAlpha = alpha * 0.55;
-  ctx.fillStyle = "rgba(58, 0, 8, 0.5)";
+  ctx.fillStyle = "rgba(105, 0, 10, 0.58)";
   ctx.beginPath();
   ctx.ellipse(width * 0.05, -height * 0.08, width * 0.34, height * 0.28, -0.25, 0, Math.PI * 2);
   ctx.fill();
 
   ctx.globalAlpha = alpha * 0.18;
-  ctx.strokeStyle = "rgba(245, 167, 150, 0.75)";
+  ctx.strokeStyle = "rgba(255, 187, 165, 0.8)";
   ctx.lineWidth = Math.max(1.4, height * 0.06);
   ctx.lineCap = "round";
   ctx.beginPath();
@@ -251,7 +238,7 @@ function drawDustyStreak(from, to, thickness, alpha) {
   ctx.save();
   ctx.globalAlpha = alpha;
   ctx.lineCap = "round";
-  ctx.strokeStyle = "rgba(91, 2, 11, 0.76)";
+  ctx.strokeStyle = "rgba(143, 2, 15, 0.82)";
   ctx.lineWidth = Math.max(2, thickness);
   ctx.beginPath();
   ctx.moveTo(from.x, from.y);
@@ -266,7 +253,7 @@ function drawDustyStreak(from, to, thickness, alpha) {
   ctx.stroke();
 
   ctx.globalAlpha = alpha * 0.34;
-  ctx.strokeStyle = "rgba(180, 54, 45, 0.55)";
+  ctx.strokeStyle = "rgba(222, 54, 43, 0.62)";
   ctx.lineWidth = Math.max(1.2, thickness * 0.42);
   ctx.beginPath();
   ctx.moveTo(from.x + thickness * 1.4, from.y - thickness * 0.8);
@@ -294,13 +281,13 @@ function drawFineFaceScratches(cheek, jaw, faceWidth, angle, time) {
       y: center.y + normal.y * offset + Math.sin(angle) * length * 0.42
     };
 
-    drawDustyStreak(start, end, faceWidth * (0.008 + (i % 2) * 0.003), 0.22 + Math.sin(time / 500 + i) * 0.03);
+    drawDustyStreak(start, end, faceWidth * (0.008 + (i % 2) * 0.003), 0.29 + Math.sin(time / 500 + i) * 0.03);
   }
 }
 
 function drawSubtleEdgeSplatters(points, faceWidth, time) {
   ctx.save();
-  ctx.globalAlpha = 0.4;
+  ctx.globalAlpha = 0.52;
 
   points.forEach((point, pointIndex) => {
     for (let i = 0; i < 7; i += 1) {
@@ -319,7 +306,7 @@ function drawSubtleEdgeSplatters(points, faceWidth, time) {
 function drawFlatSpeck(point, radius, time) {
   ctx.save();
   ctx.globalAlpha = 0.45 + Math.sin(time / 700) * 0.04;
-  ctx.fillStyle = "rgba(92, 2, 10, 0.72)";
+  ctx.fillStyle = "rgba(148, 3, 15, 0.82)";
   ctx.beginPath();
   ctx.ellipse(point.x, point.y, radius * 1.45, radius, 0, 0, Math.PI * 2);
   ctx.fill();
