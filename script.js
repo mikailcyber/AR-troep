@@ -9,6 +9,7 @@ const imagePaths = {
   basementDark: "assets/kelder-donker.png",
   basementLight: "assets/kelder-licht.png",
   arBook: "assets/ar-boek.png",
+  mirrorRoom: "assets/spiegelkamer.png",
   kitchen: "assets/keuken.png",
   ovenOpen: "assets/oven-open.png",
   ovenOpenEmpty: "assets/oven-open-empty.png"
@@ -121,6 +122,17 @@ const scenes = {
         }
       },
       {
+        label: "Bovenkamer",
+        aria: "Ga naar de kamer boven aan de rechtertrap",
+        x: 62,
+        y: 20,
+        w: 16,
+        h: 31,
+        shape: "stairs-up",
+        rotate: 1,
+        target: "mirrorRoom"
+      },
+      {
         label: "Keuken",
         aria: "Ga naar de keuken",
         x: 0,
@@ -129,6 +141,35 @@ const scenes = {
         h: 43,
         shape: "archway",
         target: "kitchen"
+      }
+    ]
+  },
+  mirrorRoom: {
+    label: "Spiegelkamer",
+    image: imagePaths.mirrorRoom,
+    back: "hall",
+    hotspots: [
+      {
+        label: "Terug",
+        aria: "Ga terug naar de grote hal",
+        x: 4.5,
+        y: 23.5,
+        w: 8.5,
+        h: 16,
+        shape: "arrow-left",
+        target: "hall"
+      },
+      {
+        label: "Spiegel",
+        aria: "Open de AR-spiegel",
+        x: 74,
+        y: 17,
+        w: 9,
+        h: 35,
+        shape: "mirror",
+        action() {
+          openFaceAR();
+        }
       }
     ]
   },
@@ -416,6 +457,10 @@ function openARBook() {
   hasSeenAR = true;
   saveGameState();
   showPcARPanel();
+}
+
+function openFaceAR() {
+  window.location.href = "face-ar.html";
 }
 
 function showPcARPanel() {

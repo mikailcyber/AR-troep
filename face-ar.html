@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AR Spiegel</title>
+  <link rel="stylesheet" href="face-ar.css">
+</head>
+<body>
+  <main class="face-ar-page">
+    <section class="start-panel" id="startPanel">
+      <h1>AR Spiegel</h1>
+      <p>Kijk in de camera. De spiegel laat zien wat niemand zag.</p>
+      <button type="button" id="startButton">Start AR</button>
+      <p class="status" id="statusText">Geef camera-toegang om de filter te starten.</p>
+    </section>
+
+    <section class="mirror-stage" id="mirrorStage" hidden>
+      <video id="cameraVideo" playsinline muted></video>
+      <canvas id="filterCanvas"></canvas>
+      <div class="mirror-text" aria-hidden="true">Meeste bloed,<br>maar niemand heeft het gezien.</div>
+    </section>
+
+    <button class="exit-button" type="button" id="exitButton">Terug naar kamer</button>
+  </main>
+
+  <script src="face-ar.js"></script>
+</body>
+</html>
