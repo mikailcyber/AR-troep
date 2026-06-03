@@ -131,16 +131,16 @@ body {
 .mirror-text {
   position: absolute;
   left: 50%;
-  top: max(26px, env(safe-area-inset-top));
+  bottom: max(84px, calc(env(safe-area-inset-bottom) + 84px));
   z-index: 3;
   max-width: min(560px, calc(100vw - 36px));
-  padding: 12px 18px;
+  padding: 10px 16px;
   border: 1px solid rgba(190, 187, 198, 0.3);
   border-radius: 8px;
   background: rgba(11, 11, 16, 0.66);
   color: var(--text);
   font-family: Georgia, serif;
-  font-size: clamp(24px, 4.6vw, 46px);
+  font-size: clamp(20px, 3.8vw, 36px);
   line-height: 1.05;
   text-align: center;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
@@ -163,6 +163,6 @@ body {
   }
 
   .mirror-text {
-    top: max(16px, env(safe-area-inset-top));
+    bottom: max(78px, calc(env(safe-area-inset-bottom) + 78px));
   }
 }
