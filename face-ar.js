@@ -103,13 +103,16 @@ function getCurrentLandmarks() {
 function drawFaceBlood(landmarks, time) {
   const p = (index) => projectLandmark(landmarks[index]);
   const forehead = p(10);
+  const upperForehead = p(151);
   const leftCheek = p(234);
   const rightCheek = p(454);
   const noseBridge = p(168);
   const noseTip = p(1);
   const chin = p(152);
-  const leftBrow = p(105);
-  const rightBrow = p(334);
+  const leftBrow = p(70);
+  const rightBrow = p(300);
+  const leftJaw = p(172);
+  const rightJaw = p(397);
 
   const faceWidth = Math.max(90, distance(leftCheek, rightCheek));
   const angle = Math.atan2(rightCheek.y - leftCheek.y, rightCheek.x - leftCheek.x);
@@ -117,16 +120,13 @@ function drawFaceBlood(landmarks, time) {
   ctx.save();
   ctx.globalCompositeOperation = "source-over";
 
-  drawSmear(leftCheek, faceWidth * 0.21, angle - 0.2, time);
-  drawSmear(rightCheek, faceWidth * 0.2, angle + 0.2, time + 190);
-  drawSmear(forehead, faceWidth * 0.18, angle, time + 360);
-  drawSmear(chin, faceWidth * 0.12, angle, time + 520);
-
-  drawScratch(leftBrow, rightBrow, faceWidth);
-  drawNoseTrail(noseBridge, noseTip, faceWidth);
-  drawDrips(leftCheek, faceWidth * 0.15, 4);
-  drawDrips(rightCheek, faceWidth * 0.13, 3);
-  drawDrips(forehead, faceWidth * 0.1, 3);
+  drawForeheadBlood(leftBrow, rightBrow, forehead, upperForehead, faceWidth, angle, time);
+  drawClawMarks(leftCheek, leftJaw, faceWidth * 0.5, angle - 0.8, time + 110);
+  drawClawMarks(rightCheek, rightJaw, faceWidth * 0.48, angle + 0.8, time + 250);
+  drawWetPatch(leftCheek, faceWidth * 0.22, angle - 0.22, time + 390);
+  drawWetPatch(rightCheek, faceWidth * 0.2, angle + 0.18, time + 560);
+  drawCenterDrip(noseBridge, noseTip, chin, faceWidth, time + 720);
+  drawFaceSplatters(forehead, leftCheek, rightCheek, faceWidth, time);
 
   ctx.restore();
 }
@@ -157,7 +157,58 @@ function getVideoCoverFit() {
   };
 }
 
-function drawSmear(point, radius, angle, time) {
+function drawForeheadBlood(left, right, forehead, upperForehead, faceWidth, angle, time) {
+  const center = midpoint(left, right);
+  const width = distance(left, right) * 1.28;
+  const radius = faceWidth * 0.14;
+
+  drawGlossyStroke(
+    {
+      x: center.x,
+      y: center.y - faceWidth * 0.12
+    },
+    width,
+    radius,
+    angle,
+    time,
+    0.92
+  );
+
+  drawWetPatch(forehead, faceWidth * 0.18, angle, time + 140);
+  drawHangingDrips(
+    {
+      x: upperForehead.x,
+      y: upperForehead.y + faceWidth * 0.08
+    },
+    faceWidth * 0.13,
+    5
+  );
+}
+
+function drawClawMarks(center, lowerPoint, length, angle, time) {
+  const baseAngle = angle + Math.PI * 0.08;
+  const spacing = length * 0.18;
+  const normal = {
+    x: Math.cos(baseAngle + Math.PI / 2),
+    y: Math.sin(baseAngle + Math.PI / 2)
+  };
+
+  for (let i = 0; i < 3; i += 1) {
+    const offset = (i - 1) * spacing;
+    const start = {
+      x: center.x + normal.x * offset - Math.cos(baseAngle) * length * 0.38,
+      y: center.y + normal.y * offset - Math.sin(baseAngle) * length * 0.38
+    };
+    const end = {
+      x: lowerPoint.x + normal.x * offset * 0.35 + Math.cos(baseAngle) * length * 0.2,
+      y: lowerPoint.y + normal.y * offset * 0.35 + Math.sin(baseAngle) * length * 0.2
+    };
+
+    drawRaisedCut(start, end, length * 0.055, time + i * 160);
+  }
+}
+
+function drawWetPatch(point, radius, angle, time) {
   const pulse = 1 + Math.sin(time / 240) * 0.025;
 
   ctx.save();
@@ -183,45 +234,114 @@ function drawSmear(point, radius, angle, time) {
   ctx.restore();
 }
 
-function drawScratch(from, to, faceWidth) {
+function drawGlossyStroke(center, width, radius, angle, time, alpha) {
+  const pulse = 1 + Math.sin(time / 280) * 0.025;
+
   ctx.save();
-  ctx.globalAlpha = 0.72;
-  ctx.lineCap = "round";
-  ctx.strokeStyle = "rgba(119, 3, 15, 0.82)";
-  ctx.lineWidth = Math.max(3, faceWidth * 0.018);
+  ctx.translate(center.x, center.y);
+  ctx.rotate(angle);
+  ctx.globalAlpha = alpha;
 
-  for (let i = 0; i < 3; i += 1) {
-    const offset = (i - 1) * faceWidth * 0.045;
-    ctx.beginPath();
-    ctx.moveTo(from.x - faceWidth * 0.03, from.y + offset);
-    ctx.bezierCurveTo(
-      from.x + faceWidth * 0.18,
-      from.y - faceWidth * 0.05 + offset,
-      to.x - faceWidth * 0.18,
-      to.y + faceWidth * 0.06 + offset,
-      to.x + faceWidth * 0.03,
-      to.y + offset
-    );
-    ctx.stroke();
-  }
+  const body = ctx.createLinearGradient(-width / 2, 0, width / 2, 0);
+  body.addColorStop(0, "rgba(93, 1, 12, 0)");
+  body.addColorStop(0.18, "rgba(127, 5, 17, 0.82)");
+  body.addColorStop(0.48, "rgba(62, 0, 8, 0.92)");
+  body.addColorStop(0.72, "rgba(149, 14, 23, 0.72)");
+  body.addColorStop(1, "rgba(93, 1, 12, 0)");
 
-  ctx.restore();
-}
+  ctx.fillStyle = body;
+  ctx.beginPath();
+  ctx.ellipse(0, 0, width * 0.5, radius * pulse, 0, 0, Math.PI * 2);
+  ctx.fill();
 
-function drawNoseTrail(from, to, faceWidth) {
-  ctx.save();
-  ctx.globalAlpha = 0.68;
-  ctx.strokeStyle = "rgba(80, 1, 10, 0.72)";
-  ctx.lineWidth = Math.max(3, faceWidth * 0.015);
+  ctx.globalAlpha = alpha * 0.38;
+  ctx.strokeStyle = "rgba(255, 218, 203, 0.55)";
+  ctx.lineWidth = Math.max(2, radius * 0.12);
   ctx.lineCap = "round";
   ctx.beginPath();
-  ctx.moveTo(from.x, from.y);
-  ctx.lineTo(to.x - faceWidth * 0.015, to.y + faceWidth * 0.18);
+  ctx.moveTo(-width * 0.18, -radius * 0.34);
+  ctx.bezierCurveTo(-width * 0.04, -radius * 0.62, width * 0.2, -radius * 0.5, width * 0.35, -radius * 0.18);
   ctx.stroke();
+
   ctx.restore();
 }
 
-function drawDrips(point, size, amount) {
+function drawRaisedCut(start, end, thickness, time) {
+  const angle = Math.atan2(end.y - start.y, end.x - start.x);
+  const length = distance(start, end);
+  const mid = midpoint(start, end);
+
+  ctx.save();
+  ctx.translate(mid.x, mid.y);
+  ctx.rotate(angle);
+  ctx.lineCap = "round";
+
+  ctx.globalAlpha = 0.48;
+  ctx.strokeStyle = "rgba(18, 0, 3, 0.62)";
+  ctx.lineWidth = thickness * 2.7;
+  ctx.beginPath();
+  ctx.moveTo(-length * 0.5, thickness * 0.42);
+  ctx.lineTo(length * 0.5, thickness * 0.42);
+  ctx.stroke();
+
+  const gradient = ctx.createLinearGradient(0, -thickness * 1.2, 0, thickness * 1.2);
+  gradient.addColorStop(0, "rgba(202, 45, 39, 0.45)");
+  gradient.addColorStop(0.42, "rgba(138, 6, 18, 0.96)");
+  gradient.addColorStop(0.8, "rgba(53, 0, 8, 0.96)");
+  gradient.addColorStop(1, "rgba(28, 0, 5, 0.4)");
+
+  ctx.globalAlpha = 0.96;
+  ctx.strokeStyle = gradient;
+  ctx.lineWidth = thickness * (2.1 + Math.sin(time / 240) * 0.04);
+  ctx.beginPath();
+  ctx.moveTo(-length * 0.5, 0);
+  ctx.bezierCurveTo(-length * 0.18, -thickness * 0.7, length * 0.18, thickness * 0.7, length * 0.5, 0);
+  ctx.stroke();
+
+  ctx.globalAlpha = 0.64;
+  ctx.strokeStyle = "rgba(255, 205, 190, 0.62)";
+  ctx.lineWidth = Math.max(1.5, thickness * 0.38);
+  ctx.beginPath();
+  ctx.moveTo(-length * 0.36, -thickness * 0.58);
+  ctx.lineTo(length * 0.28, -thickness * 0.4);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+function drawCenterDrip(bridge, nose, chin, faceWidth, time) {
+  const start = {
+    x: bridge.x,
+    y: bridge.y + faceWidth * 0.05
+  };
+  const end = {
+    x: midpoint(nose, chin).x,
+    y: midpoint(nose, chin).y + faceWidth * 0.16
+  };
+  const length = distance(start, end);
+
+  ctx.save();
+  ctx.globalAlpha = 0.88;
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "rgba(56, 0, 8, 0.72)";
+  ctx.lineWidth = Math.max(5, faceWidth * 0.045);
+  ctx.beginPath();
+  ctx.moveTo(start.x, start.y);
+  ctx.bezierCurveTo(start.x + faceWidth * 0.05, start.y + length * 0.25, end.x - faceWidth * 0.03, end.y - length * 0.28, end.x, end.y);
+  ctx.stroke();
+
+  ctx.strokeStyle = "rgba(143, 8, 20, 0.88)";
+  ctx.lineWidth = Math.max(3, faceWidth * 0.028);
+  ctx.beginPath();
+  ctx.moveTo(start.x, start.y);
+  ctx.bezierCurveTo(start.x + faceWidth * 0.035, start.y + length * 0.25, end.x - faceWidth * 0.02, end.y - length * 0.28, end.x, end.y);
+  ctx.stroke();
+
+  drawDroplet(end, faceWidth * 0.06, time);
+  ctx.restore();
+}
+
+function drawHangingDrips(point, size, amount) {
   ctx.save();
   ctx.fillStyle = "rgba(97, 2, 13, 0.82)";
   ctx.strokeStyle = "rgba(49, 0, 7, 0.58)";
@@ -245,6 +365,48 @@ function drawDrips(point, size, amount) {
   ctx.restore();
 }
 
+function drawDroplet(point, radius, time) {
+  const gradient = ctx.createRadialGradient(
+    point.x - radius * 0.3,
+    point.y - radius * 0.35,
+    radius * 0.1,
+    point.x,
+    point.y,
+    radius * 1.2
+  );
+  gradient.addColorStop(0, "rgba(255, 165, 140, 0.62)");
+  gradient.addColorStop(0.22, "rgba(154, 12, 22, 0.98)");
+  gradient.addColorStop(1, "rgba(42, 0, 6, 0.94)");
+
+  ctx.save();
+  ctx.globalAlpha = 0.95;
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.ellipse(point.x, point.y + Math.sin(time / 260) * 1.4, radius * 0.78, radius * 1.24, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawFaceSplatters(forehead, leftCheek, rightCheek, faceWidth, time) {
+  const anchors = [forehead, leftCheek, rightCheek];
+  ctx.save();
+  ctx.globalAlpha = 0.78;
+
+  anchors.forEach((anchor, anchorIndex) => {
+    for (let i = 0; i < 10; i += 1) {
+      const seed = anchorIndex * 97 + i * 31;
+      const orbit = seed + time * 0.00002;
+      const radius = faceWidth * (0.008 + ((seed % 7) / 7) * 0.026);
+      const x = anchor.x + Math.cos(orbit) * faceWidth * (0.13 + (seed % 5) * 0.025);
+      const y = anchor.y + Math.sin(seed * 0.7) * faceWidth * 0.15;
+
+      drawDroplet({ x, y }, radius, time + seed);
+    }
+  });
+
+  ctx.restore();
+}
+
 function drawMirrorVignette() {
   const gradient = ctx.createRadialGradient(
     canvas.width / 2,
@@ -262,6 +424,13 @@ function drawMirrorVignette() {
 
 function distance(a, b) {
   return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function midpoint(a, b) {
+  return {
+    x: (a.x + b.x) / 2,
+    y: (a.y + b.y) / 2
+  };
 }
 
 function resizeCanvas() {
