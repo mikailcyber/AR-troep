@@ -5,7 +5,7 @@ const scanNote = document.getElementById("scanNote");
 const exitButton = document.getElementById("exitButton");
 const sceneMount = document.getElementById("sceneMount");
 
-const targetImagePath = "assets/ar/book-target.png";
+const targetImagePath = "assets/ar/book-scan-marker.png";
 const overlayImagePath = "assets/ar/book-inside-transparent.png";
 const precompiledTargetPath = "assets/ar/book-target.mind";
 

@@ -412,11 +412,22 @@ function openARBook() {
 }
 
 function showPcARPanel() {
-  const arUrl = new URL("ar.html?scanner=1", window.location.href).href;
+  const arUrl = getPhoneARUrl();
   pcArLink.href = arUrl;
   pcArQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(arUrl)}`;
   pcArPanel.hidden = false;
   pcArClose.focus();
+}
+
+function getPhoneARUrl() {
+  const publicUrl = "https://mikailcyber.github.io/AR-troep/ar.html?scanner=1";
+  const isLocal =
+    window.location.protocol === "file:" ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1";
+
+  if (isLocal) return publicUrl;
+  return new URL("ar.html?scanner=1", window.location.href).href;
 }
 
 function hidePcARPanel() {
