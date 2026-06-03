@@ -430,7 +430,7 @@ function hidePcARPanel() {
 }
 
 function isMobileDevice() {
-  return window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+  return window.matchMedia("(max-width: 768px)").matches;
 }
 
 function saveGameState() {
