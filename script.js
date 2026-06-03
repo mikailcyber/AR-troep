@@ -18,6 +18,7 @@ const gameStateKey = "wednesdayMysterieState";
 let currentScene = "main";
 let hasSeenAR = false;
 let foundFinger = false;
+let basementLightOn = false;
 
 const screen = document.getElementById("screen");
 const sceneImage = document.getElementById("sceneImage");
@@ -116,7 +117,7 @@ const scenes = {
         shape: "stairs-down",
         rotate: -3,
         get target() {
-          return hasSeenAR ? "basementLight" : "basementDark";
+          return basementLightOn ? "basementLight" : "basementDark";
         }
       },
       {
@@ -135,6 +136,9 @@ const scenes = {
     label: "Kelder zonder licht",
     image: imagePaths.basementDark,
     back: "hall",
+    onEnter() {
+      basementLightOn = false;
+    },
     hotspots: [
       {
         label: "Trap naar boven",
@@ -150,10 +154,10 @@ const scenes = {
       {
         label: "Lichtknop",
         aria: "Zet het licht aan",
-        x: 2.2,
-        y: 44,
-        w: 5.6,
-        h: 17,
+        x: 0.8,
+        y: 41.5,
+        w: 9,
+        h: 21,
         shape: "switch",
         target: "basementLight",
         pulse: true
@@ -164,6 +168,9 @@ const scenes = {
     label: "Kelder met licht",
     image: imagePaths.basementLight,
     back: "hall",
+    onEnter() {
+      basementLightOn = true;
+    },
     hotspots: [
       {
         label: "Trap naar boven",
@@ -179,10 +186,10 @@ const scenes = {
       {
         label: "Lichtknop",
         aria: "Zet het licht uit",
-        x: 2.2,
-        y: 44,
-        w: 5.6,
-        h: 17,
+        x: 0.8,
+        y: 41.5,
+        w: 9,
+        h: 21,
         shape: "switch",
         target: "basementDark"
       },
