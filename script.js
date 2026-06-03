@@ -408,12 +408,6 @@ function collectFinger() {
 function openARBook() {
   hasSeenAR = true;
   saveGameState();
-
-  if (isMobileDevice()) {
-    window.location.href = "ar.html?scanner=1";
-    return;
-  }
-
   showPcARPanel();
 }
 
@@ -427,10 +421,6 @@ function showPcARPanel() {
 
 function hidePcARPanel() {
   pcArPanel.hidden = true;
-}
-
-function isMobileDevice() {
-  return window.matchMedia("(max-width: 768px)").matches;
 }
 
 function saveGameState() {
