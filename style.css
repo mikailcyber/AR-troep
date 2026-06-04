@@ -319,6 +319,18 @@ button {
   animation: none;
 }
 
+.hotspot.is-glowing {
+  background: rgba(112, 72, 151, 0.08);
+  filter: drop-shadow(0 0 5px rgba(156, 112, 205, 0.62));
+  animation: hotspotGlow 2.2s ease-in-out infinite;
+}
+
+.hotspot.is-glowing:hover,
+.hotspot.is-glowing:focus-visible {
+  background: rgba(138, 91, 184, 0.13);
+  filter: drop-shadow(0 0 8px rgba(181, 137, 225, 0.82));
+}
+
 .hotspot--arched-door {
   border-radius: 46% 46% 8px 8px;
   clip-path: polygon(14% 100%, 14% 43%, 20% 22%, 36% 8%, 50% 0, 64% 8%, 80% 22%, 86% 43%, 86% 100%);
@@ -508,8 +520,8 @@ button {
 }
 
 .screen[data-scene="mirrorRoom"] {
-  width: min(100vw, calc(100vh * 1.777), 1900px);
-  aspect-ratio: 1672 / 941;
+  width: min(100vw, calc(100vh * 1.553), 1900px);
+  aspect-ratio: 1297 / 835;
 }
 
 .screen[data-scene="mirrorPaper"] {
@@ -518,7 +530,8 @@ button {
 }
 
 .screen[data-scene="mirrorRoom"] .scene-image,
-.screen[data-scene="mirrorPaper"] .scene-image {
+.screen[data-scene="mirrorPaper"] .scene-image,
+.screen[data-scene="ovenOpen"] .scene-image {
   object-fit: contain;
   background: rgba(8, 8, 12, 0.9);
 }
@@ -535,6 +548,18 @@ button {
   }
   50% {
     box-shadow: 0 0 26px rgba(147, 96, 210, 0.9), inset 0 0 18px rgba(147, 96, 210, 0.28);
+  }
+}
+
+@keyframes hotspotGlow {
+  0%,
+  100% {
+    opacity: 0.58;
+    filter: drop-shadow(0 0 4px rgba(156, 112, 205, 0.48));
+  }
+  50% {
+    opacity: 0.92;
+    filter: drop-shadow(0 0 8px rgba(181, 137, 225, 0.78));
   }
 }
 

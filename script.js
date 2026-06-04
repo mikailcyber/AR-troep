@@ -157,20 +157,20 @@ const scenes = {
       {
         label: "Terug",
         aria: "Ga terug naar de grote hal",
-        x: 4.5,
-        y: 23.5,
-        w: 8.5,
-        h: 16,
+        x: 3.5,
+        y: 18.5,
+        w: 8,
+        h: 13.5,
         shape: "arrow-left",
         target: "hall"
       },
       {
         label: "Bloedig papier",
         aria: "Onderzoek het bloedige papier op de grond",
-        x: 51,
-        y: 74,
-        w: 21,
-        h: 22,
+        x: 54,
+        y: 76,
+        w: 22,
+        h: 21,
         shape: "paper",
         rotate: 8,
         target: "mirrorPaper"
@@ -178,11 +178,12 @@ const scenes = {
       {
         label: "Spiegel",
         aria: "Open de AR-spiegel",
-        x: 75.6,
-        y: 17.5,
-        w: 8.4,
-        h: 39.5,
+        x: 82.3,
+        y: 17.2,
+        w: 9.5,
+        h: 37.3,
         shape: "mirror",
+        glow: true,
         action() {
           openFaceAR();
         }
@@ -230,6 +231,17 @@ const scenes = {
       basementLightOn = false;
     },
     hotspots: [
+      {
+        label: "Trap naar boven",
+        aria: "Ga via de trap terug naar de grote hal",
+        x: 34.56,
+        y: 19.75,
+        w: 13.56,
+        h: 52.51,
+        shape: "stairs-up",
+        rotate: -1,
+        target: "hall"
+      },
       {
         label: "Lichtknop",
         aria: "Zet het licht aan",
@@ -284,6 +296,7 @@ const scenes = {
         shape: "book",
         rotate: 8,
         pulse: true,
+        glow: true,
         action() {
           openARBook();
         }
@@ -363,10 +376,18 @@ const scenes = {
       {
         label: "Terug",
         aria: "Ga terug naar de keuken",
-        x: 7.64,
-        y: 43.92,
-        w: 7.48,
-        h: 11.41,
+        get x() {
+          return foundFinger ? 1.5 : 7.64;
+        },
+        get y() {
+          return foundFinger ? 38.5 : 43.92;
+        },
+        get w() {
+          return foundFinger ? 9 : 7.48;
+        },
+        get h() {
+          return foundFinger ? 13 : 11.41;
+        },
         shape: "arrow-left",
         target: "kitchen"
       },
@@ -446,6 +467,7 @@ function renderHotspots(scene) {
     button.type = "button";
     button.className = "hotspot";
     if (hotspotData.pulse) button.classList.add("is-pulsing");
+    if (hotspotData.glow) button.classList.add("is-glowing");
     if (hotspotData.shape) button.classList.add(`hotspot--${hotspotData.shape}`);
     button.style.left = `${hotspotData.x}%`;
     button.style.top = `${hotspotData.y}%`;
