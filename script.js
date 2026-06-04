@@ -8,6 +8,7 @@ const imagePaths = {
   hall: "assets/grote-hal.png",
   basementDark: "assets/kelder-donker.png",
   basementLight: "assets/kelder-licht.png",
+  basementLightFinger: "assets/kelder-licht-vinger.png",
   arBook: "assets/ar-boek.png",
   mirrorRoom: "assets/spiegelkamer.png",
   mirrorPaper: "assets/papier-vinger.png",
@@ -22,6 +23,7 @@ let currentScene = "main";
 let hasSeenAR = false;
 let foundFinger = false;
 let foundPaperFinger = false;
+let foundBasementFinger = false;
 let basementLightOn = false;
 
 const screen = document.getElementById("screen");
@@ -243,7 +245,9 @@ const scenes = {
   },
   basementLight: {
     label: "Kelder met licht",
-    image: imagePaths.basementLight,
+    get image() {
+      return foundBasementFinger ? imagePaths.basementLight : imagePaths.basementLightFinger;
+    },
     back: "hall",
     onEnter() {
       basementLightOn = true;
@@ -282,6 +286,20 @@ const scenes = {
         pulse: true,
         action() {
           openARBook();
+        }
+      },
+      {
+        label: "Stoelvinger",
+        aria: "Pak de vinger op de stoel",
+        x: 57.6,
+        y: 58.2,
+        w: 5,
+        h: 10.2,
+        shape: "finger",
+        rotate: -18,
+        hiddenWhenFound: "basement",
+        action() {
+          collectFinger("basement");
         }
       }
     ]
@@ -473,6 +491,8 @@ function collectFinger(source = "oven") {
 
   if (source === "paper") {
     foundPaperFinger = true;
+  } else if (source === "basement") {
+    foundBasementFinger = true;
   } else {
     foundFinger = true;
   }
@@ -481,6 +501,7 @@ function collectFinger(source = "oven") {
   screen.classList.add("has-found-finger");
   if (source === "oven") sceneImage.src = imagePaths.ovenOpenEmpty;
   if (source === "paper") sceneImage.src = imagePaths.mirrorPaperEmpty;
+  if (source === "basement") sceneImage.src = imagePaths.basementLight;
   updateInventory(true);
   playCollectEffect();
   renderHotspots(scenes[currentScene]);
@@ -523,7 +544,8 @@ function saveGameState() {
   const state = {
     hasSeenAR,
     foundFinger,
-    foundPaperFinger
+    foundPaperFinger,
+    foundBasementFinger
   };
 
   localStorage.setItem(gameStateKey, JSON.stringify(state));
@@ -535,10 +557,12 @@ function loadGameState() {
     hasSeenAR = Boolean(state.hasSeenAR);
     foundFinger = Boolean(state.foundFinger);
     foundPaperFinger = Boolean(state.foundPaperFinger);
+    foundBasementFinger = Boolean(state.foundBasementFinger);
   } catch {
     hasSeenAR = false;
     foundFinger = false;
     foundPaperFinger = false;
+    foundBasementFinger = false;
   }
 }
 
@@ -565,17 +589,19 @@ function updateInventory(withEffect) {
 
 function isFingerFound(source) {
   if (source === "paper") return foundPaperFinger;
+  if (source === "basement") return foundBasementFinger;
   return foundFinger;
 }
 
 function getFoundFingerCount() {
-  return Number(foundFinger) + Number(foundPaperFinger);
+  return Number(foundFinger) + Number(foundPaperFinger) + Number(foundBasementFinger);
 }
 
 function resetGameProgress() {
   hasSeenAR = false;
   foundFinger = false;
   foundPaperFinger = false;
+  foundBasementFinger = false;
   basementLightOn = false;
   localStorage.removeItem(gameStateKey);
 }
