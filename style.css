@@ -320,13 +320,23 @@ button {
 }
 
 .hotspot.is-glowing {
-  background: rgba(112, 72, 151, 0.08);
+  --glow-shift-x: 0%;
+}
+
+.hotspot.is-glowing::before {
+  content: "";
+  position: absolute;
+  inset: 3%;
+  border-radius: inherit;
+  background: rgba(112, 72, 151, 0.09);
   filter: drop-shadow(0 0 5px rgba(156, 112, 205, 0.62));
+  transform: translateX(var(--glow-shift-x));
+  pointer-events: none;
   animation: hotspotGlow 2.2s ease-in-out infinite;
 }
 
-.hotspot.is-glowing:hover,
-.hotspot.is-glowing:focus-visible {
+.hotspot.is-glowing:hover::before,
+.hotspot.is-glowing:focus-visible::before {
   background: rgba(138, 91, 184, 0.13);
   filter: drop-shadow(0 0 8px rgba(181, 137, 225, 0.82));
 }

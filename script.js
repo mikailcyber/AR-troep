@@ -18,6 +18,16 @@ const imagePaths = {
   ovenOpenEmpty: "assets/oven-open-empty.png"
 };
 
+const soundPaths = {
+  basementScream: "assets/audio/basement-scream.mp3",
+  mirrorRoomWind: "assets/audio/mirror-room-wind.mp3"
+};
+
+const soundSettings = {
+  basementScream: { maxDuration: 3.5, playbackRate: 1.15, volume: 0.82 },
+  mirrorRoomWind: { maxDuration: 6, playbackRate: 1, volume: 0.58 }
+};
+
 const gameStateKey = "wednesdayMysterieState";
 let currentScene = "main";
 let hasSeenAR = false;
@@ -25,6 +35,8 @@ let foundFinger = false;
 let foundPaperFinger = false;
 let foundBasementFinger = false;
 let basementLightOn = false;
+let activeSound = null;
+let activeSoundTimer = null;
 
 const screen = document.getElementById("screen");
 const sceneImage = document.getElementById("sceneImage");
@@ -135,6 +147,9 @@ const scenes = {
         h: 18,
         shape: "stairs-up",
         rotate: 1,
+        action() {
+          playSound("mirrorRoomWind");
+        },
         target: "mirrorRoom"
       },
       {
@@ -250,6 +265,9 @@ const scenes = {
         w: 3.99,
         h: 12.74,
         shape: "switch",
+        action() {
+          playSound("basementScream");
+        },
         target: "basementLight",
         pulse: true
       }
@@ -297,6 +315,7 @@ const scenes = {
         rotate: 8,
         pulse: true,
         glow: true,
+        glowShiftX: 10,
         action() {
           openARBook();
         }
@@ -474,6 +493,7 @@ function renderHotspots(scene) {
     button.style.width = `${hotspotData.w}%`;
     button.style.height = `${hotspotData.h}%`;
     if (hotspotData.rotate) button.style.setProperty("--hotspot-rotate", `${hotspotData.rotate}deg`);
+    if (hotspotData.glowShiftX) button.style.setProperty("--glow-shift-x", `${hotspotData.glowShiftX}%`);
     button.dataset.label = hotspotData.label;
     button.setAttribute("aria-label", hotspotData.aria);
 
@@ -503,6 +523,40 @@ function renderActions(scene) {
 
 function resolveValue(value) {
   return typeof value === "function" ? value() : value;
+}
+
+function playSound(name) {
+  const path = soundPaths[name];
+  const settings = soundSettings[name];
+  if (!path || !settings) return;
+
+  stopActiveSound();
+
+  const audio = new Audio(path);
+  audio.volume = settings.volume;
+  audio.playbackRate = settings.playbackRate;
+  audio.preservesPitch = false;
+  audio.mozPreservesPitch = false;
+  audio.webkitPreservesPitch = false;
+  activeSound = audio;
+
+  const stopThisSound = () => {
+    if (activeSound === audio) stopActiveSound();
+  };
+
+  activeSoundTimer = window.setTimeout(stopThisSound, settings.maxDuration * 1000);
+  audio.addEventListener("ended", stopThisSound, { once: true });
+  audio.play().catch(stopThisSound);
+}
+
+function stopActiveSound() {
+  window.clearTimeout(activeSoundTimer);
+  activeSoundTimer = null;
+
+  if (!activeSound) return;
+  activeSound.pause();
+  activeSound.currentTime = 0;
+  activeSound = null;
 }
 
 function collectFinger(source = "oven") {
