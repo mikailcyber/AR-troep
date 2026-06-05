@@ -163,6 +163,9 @@ body {
   }
 
   .mirror-text {
-    bottom: max(78px, calc(env(safe-area-inset-bottom) + 78px));
+    bottom: max(168px, calc(env(safe-area-inset-bottom) + 168px));
+    max-width: calc(100vw - 44px);
+    font-size: clamp(20px, 7vw, 28px);
+    line-height: 1.12;
   }
 }
