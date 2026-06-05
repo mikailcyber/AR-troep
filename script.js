@@ -602,7 +602,7 @@ function showPcARPanel() {
 }
 
 function getPhoneARUrl() {
-  const publicUrl = "https://mikailcyber.github.io/AR-troep/ar.html?scanner=1";
+  const publicUrl = "https://mikailcyber.github.io/Datapunt12-website/ar.html?scanner=1";
   const isLocal =
     window.location.protocol === "file:" ||
     window.location.hostname === "localhost" ||
